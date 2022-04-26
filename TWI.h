@@ -29,8 +29,6 @@ extern union TWI_statusReg_t TWI_statusReg;
 ****************************************************************************/
 void TWI_Slave_Initialise( unsigned char );
 unsigned char TWI_Transceiver_Busy( void );
-unsigned char TWI_Get_State_Info( void );
-void TWI_Start_Transceiver_With_Data( unsigned char * , unsigned char );
 void TWI_Start_Transceiver(void);
 unsigned char TWI_Get_Data_From_Transceiver( unsigned char *, unsigned char );
 
@@ -47,23 +45,6 @@ unsigned char TWI_Get_Data_From_Transceiver( unsigned char *, unsigned char );
 /****************************************************************************
   TWI State codes
 ****************************************************************************/
-// General TWI Master staus codes
-#define TWI_START                  0x08  // START has been transmitted
-#define TWI_REP_START              0x10  // Repeated START has been transmitted
-#define TWI_ARB_LOST               0x38  // Arbitration lost
-
-// TWI Master Transmitter staus codes
-#define TWI_MTX_ADR_ACK            0x18  // SLA+W has been tramsmitted and ACK received
-#define TWI_MTX_ADR_NACK           0x20  // SLA+W has been tramsmitted and NACK received
-#define TWI_MTX_DATA_ACK           0x28  // Data byte has been tramsmitted and ACK received
-#define TWI_MTX_DATA_NACK          0x30  // Data byte has been tramsmitted and NACK received
-
-// TWI Master Receiver staus codes
-#define TWI_MRX_ADR_ACK            0x40  // SLA+R has been tramsmitted and ACK received
-#define TWI_MRX_ADR_NACK           0x48  // SLA+R has been tramsmitted and NACK received
-#define TWI_MRX_DATA_ACK           0x50  // Data byte has been received and ACK tramsmitted
-#define TWI_MRX_DATA_NACK          0x58  // Data byte has been received and NACK tramsmitted
-
 // TWI Slave Transmitter staus codes
 #define TWI_STX_ADR_ACK            0xA8  // Own SLA+R has been received; ACK has been returned
 #define TWI_STX_ADR_ACK_M_ARB_LOST 0xB0  // Arbitration lost in SLA+R/W as Master; own SLA+R has been received; ACK has been returned

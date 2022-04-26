@@ -17,6 +17,10 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "ST7735.h"
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/pgmspace.h>
+#include "ST7735.h"
 
 /******************************************************************************
 * Local Functions

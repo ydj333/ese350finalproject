@@ -56,45 +56,6 @@ unsigned char TWI_Transceiver_Busy( void )
 }
 
 /****************************************************************************
-Call this function to fetch the state information of the previous operation. The function will hold execution (loop)
-until the TWI_ISR has completed with the previous operation. If there was an error, then the function
-will return the TWI State code.
-****************************************************************************/
-unsigned char TWI_Get_State_Info( void )
-{
-    while ( TWI_Transceiver_Busy() ) {}             // Wait until TWI has completed the transmission.
-    return ( TWI_state );                         // Return error state.
-}
-
-/****************************************************************************
-Call this function to send a prepared message, or start the Transceiver for reception. Include
-a pointer to the data to be sent if a SLA+W is received. The data will be copied to the TWI buffer.
-Also include how many bytes that should be sent. Note that unlike the similar Master function, the
-Address byte is not included in the message buffers.
-The function will hold execution (loop) until the TWI_ISR has completed with the previous operation,
-then initialize the next operation and return.
-****************************************************************************/
-void TWI_Start_Transceiver_With_Data( unsigned char *msg, unsigned char msgSize )
-{
-    unsigned char temp;
-
-    while ( TWI_Transceiver_Busy() ) {}             // Wait until TWI is ready for next transmission.
-
-    TWI_msgSize = msgSize;                        // Number of data to transmit.
-    for ( temp = 0; temp < msgSize; temp++ )      // Copy data that may be transmitted if the TWI Master requests data.
-    {
-        TWI_buf[ temp ] = msg[ temp ];
-    }
-    TWI_statusReg.all = 0;
-    TWI_state         = TWI_NO_STATE ;
-    TWCR = (1<<TWEN)|                             // TWI Interface enabled.
-           (1<<TWIE)|(1<<TWINT)|                  // Enable TWI Interupt and clear the flag.
-           (1<<TWEA)|(0<<TWSTA)|(0<<TWSTO)|       // Prepare to ACK next time the Slave is addressed.
-           (0<<TWWC);                             //
-    TWI_busy = 1;
-}
-
-/****************************************************************************
 Call this function to start the Transceiver without specifing new transmission data. Useful for restarting
 a transmission, or just starting the transceiver for reception. The driver will reuse the data previously put
 in the transceiver buffers. The function will hold execution (loop) until the TWI_ISR has completed with the
